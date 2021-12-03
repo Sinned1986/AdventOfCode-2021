@@ -3,7 +3,7 @@ import numpy
 
 def read_measurements():
     measurements = []
-    with open('day01/input.txt') as fv:
+    with open('day/1/input.txt') as fv:
         for row in fv:
             measurements.append(int(row))
     return measurements
@@ -18,8 +18,8 @@ def day01a():
         if op[0] > op[1]:
             incr = incr+1
 
-    print('%d measurements are larger then the previous ones' % incr)
 
+    return incr
 
 def day01b():
     measurements = numpy.array(read_measurements())
@@ -34,9 +34,8 @@ def day01b():
         if x > 0:
             incr = incr + 1
 
-    print('%d sums are larger than the previous' % incr)
-
+    return incr
 
 if __name__ == "__main__":
-    day01a()
-    day01b()
+    print('%d measurements are larger then the previous ones' % day01a())
+    print('%d sums are larger than the previous' % day01b())
