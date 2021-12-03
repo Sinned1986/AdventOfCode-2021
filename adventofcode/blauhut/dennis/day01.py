@@ -1,11 +1,13 @@
 import numpy
 
+
 def read_measurements():
     measurements = []
     with open('day01/input.txt') as fv:
         for row in fv:
             measurements.append(int(row))
     return measurements
+
 
 def day01a():
     measurements = read_measurements()
@@ -17,6 +19,7 @@ def day01a():
             incr = incr+1
 
     print('%d measurements are larger then the previous ones' % incr)
+
 
 def day01b():
     measurements = numpy.array(read_measurements())
