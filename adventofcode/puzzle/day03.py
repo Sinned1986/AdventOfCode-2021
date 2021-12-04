@@ -38,5 +38,46 @@ def day03a():
 
     return gamma_rate * epsilon_rate
 
+
+def filter_bit(values, index, invert_condition):
+    filtered_values = []
+    ones = 0
+
+    # count ones at position index
+    for v in values:
+        if ((v >> index) & 1) != 0:
+            ones = ones + 1
+
+    if 2*ones >= len(values):
+        condition = 1
+    else:
+        condition = 0
+    if invert_condition:
+        condition = condition ^ 1
+
+    for v in values:
+        if ((v >> index) & 1) == condition:
+            filtered_values.append(v)
+
+    if len(filtered_values) == 1:
+        return filtered_values.pop()
+    elif index == 0:
+        raise RecursionError
+
+    return filter_bit(filtered_values, index-1, invert_condition)
+
+
+def day03b():
+    values, digits = read_diagnostics()
+    oxygen_generator_rating = 0
+    co2_scrubber_rating = 0
+
+    oxygen_generator_rating = filter_bit(values=values, index=digits - 1, invert_condition=False)
+    co2_scrubber_rating = filter_bit(values=values, index=digits - 1, invert_condition=True)
+
+    return oxygen_generator_rating * co2_scrubber_rating
+
+
 if __name__ == '__main__':
     print('%d is the power consumption' % (day03a()))
+    print('%d is the life support rating' % (day03b()))
