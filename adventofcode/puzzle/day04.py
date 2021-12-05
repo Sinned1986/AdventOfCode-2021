@@ -58,60 +58,7 @@ def mark_numbers_on_board(board, numbers_to_mark):
                 marked_board[y, x] = val
     return marked_board
 
-
-def day04a(plot_board=False):
-    bbs, bs = read_bingo_file()
-    bbs_h = create_bingo_history(bbs)
-
-    winner_board_index = -1
-    end_round = -1
-    marked_numbers = []
-
-    try:
-        for game_round, called_number in enumerate(bs):
-            for board_idx, board in enumerate(bbs):
-                search_result = np.where(board == called_number)
-                if len(search_result[0]) == 1:
-                    bbs_h[board_idx][search_result[0], search_result[1]] = True
-                    cross_h = bbs_h[board_idx][search_result[0], :]
-                    cross_v = bbs_h[board_idx][:, search_result[1]]
-                    if np.all(cross_h):
-                        winner_numbers = np.reshape(board[search_result[0], :], -1)
-                        raise EndGameException(board_idx, game_round, winner_numbers)
-                    if np.all(cross_v):
-                        winner_numbers = np.reshape(board[:, search_result[1]], -1)
-                        raise EndGameException(board_idx, game_round, winner_numbers)
-    except EndGameException as e:
-
-        winner_board_index = e.board_index
-        end_round = e.game_round
-        marked_numbers = bs[:e.game_round + 1]
-
-        if plot_board:
-            print('player %2d won in round %3d with values: %r' % (e.board_index, e.game_round, e.winner_numbers))
-
-            called_numbers_on_board = mark_numbers_on_board(bbs[e.board_index], bs[:e.game_round + 1])
-            winner_numbers_on_board = mark_numbers_on_board(bbs[e.board_index], e.winner_numbers)
-
-            print('complete board:\n%r' % bbs[e.board_index])
-            print('called numbers:\n%r' % called_numbers_on_board)
-            print('winner numbers:\n%r' % winner_numbers_on_board)
-
-    else:
-        if plot_board:
-            print('no player won')
-        return -1
-
-    unmarked_numbers = []
-    for board_number in np.reshape(bbs[winner_board_index], -1):
-        if board_number not in marked_numbers:
-            unmarked_numbers.append(board_number)
-
-    adventofcode_result = np.sum(unmarked_numbers) * bs[end_round]
-    return adventofcode_result
-
-
-def day04b(plot_board=False):
+def play_bingo(end_condition, plot_board=False):
     bbs, bs = read_bingo_file()
     bbs_h = create_bingo_history(bbs)
     bbs_done = np.zeros(len(bbs), dtype=bool)
@@ -135,7 +82,7 @@ def day04b(plot_board=False):
                         if np.all(cross_v):
                             bbs_done[board_idx] = True
                             winner_numbers = np.reshape(board[:, search_result[1]], -1)
-                        if np.all(bbs_done):
+                        if end_condition(bbs_done):
                             raise EndGameException(board_idx, game_round, winner_numbers)
     except EndGameException as e:
 
@@ -167,5 +114,14 @@ def day04b(plot_board=False):
     return adventofcode_result
 
 
+def day04a(plot_board=False):
+    return play_bingo(end_condition=np.any, plot_board=plot_board)
+
+
+def day04b(plot_board=False):
+    return play_bingo(end_condition=np.all, plot_board=plot_board)
+
+
 if __name__ == '__main__':
+    print(day04a(plot_board=True))
     print(day04b(plot_board=True))
