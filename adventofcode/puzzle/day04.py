@@ -1,4 +1,6 @@
 import numpy as np
+import colorama
+from functools import partial
 
 
 def read_bingo_sequence(fv):
@@ -96,9 +98,10 @@ def play_bingo(end_condition, plot_board=False):
             called_numbers_on_board = mark_numbers_on_board(bbs[e.board_index], bs[:e.game_round + 1])
             winner_numbers_on_board = mark_numbers_on_board(bbs[e.board_index], e.winner_numbers)
 
+            color_func = partial(color_numbers, bs[:e.game_round + 1], e.winner_numbers)
+            np.set_printoptions(formatter={'int': color_func}, linewidth=200)
             print('complete board:\n%r' % bbs[e.board_index])
-            print('called numbers:\n%r' % called_numbers_on_board)
-            print('winner numbers:\n%r' % winner_numbers_on_board)
+            np.set_printoptions(formatter=None, linewidth=75)
 
     else:
         if plot_board:
@@ -112,6 +115,27 @@ def play_bingo(end_condition, plot_board=False):
 
     adventofcode_result = np.sum(unmarked_numbers) * bs[end_round]
     return adventofcode_result
+
+
+def color_numbers(color1_values, color2_values, value):
+    modifiers = []
+
+    if value in color1_values:
+        modifiers.append(colorama.Fore.RED)
+    if value in color2_values:
+        modifiers.append(colorama.Back.GREEN)
+
+    if value in color1_values:
+        modifiers.append(colorama.Fore.RESET)
+    if value in color2_values:
+        modifiers.append(colorama.Back.RESET)
+
+    if len(modifiers) == 0:
+        return f'{value:2}'
+    if len(modifiers) == 2:
+        return f'{modifiers[0]}{value:2}{modifiers[-1]}'
+    if len(modifiers) == 4:
+        return f'{modifiers[0]}{modifiers[1]}{value:2}{modifiers[-2]}{modifiers[-1]}'
 
 
 def day04a(plot_board=False):
