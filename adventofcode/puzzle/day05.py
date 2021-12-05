@@ -26,7 +26,6 @@ def day05b():
 
 def calc(skip_diagonal_lines):
     lines = read_lines()
-    print(lines)
 
     oceans_floor = np.zeros([1000, 1000], dtype=np.uint)
 
@@ -50,7 +49,6 @@ def calc(skip_diagonal_lines):
                 d[1] += 1
             oceans_floor[d[1], d[0]] += 1
 
-    np.set_printoptions(formatter=None, linewidth=5000, threshold=maxsize)
     return np.sum(oceans_floor > 1)
 
 
