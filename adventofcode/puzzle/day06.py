@@ -1,4 +1,4 @@
-def day06a():
+def calc_polulation(cycles):
     lanternfishes = []
     for i in range(0, 9):
         lanternfishes.append(0)
@@ -12,7 +12,7 @@ def day06a():
                 lanternfishes[int_val] += 1
 
     print(lanternfishes)
-    for day in range(0, 80):
+    for day in range(0, cycles):
         fishes_ready_to_breed = lanternfishes.pop(0)
         lanternfishes.append(fishes_ready_to_breed)
         lanternfishes[6] += fishes_ready_to_breed
@@ -20,5 +20,14 @@ def day06a():
     return sum(lanternfishes)
 
 
+def day06a():
+    return calc_polulation(80)
+
+
+def day06b():
+    return calc_polulation(256)
+
+
 if __name__ == '__main__':
     print(day06a())
+    print(day06b())
