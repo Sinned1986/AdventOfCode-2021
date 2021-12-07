@@ -15,7 +15,7 @@ def calc_linear_costs(x):
 
 
 def calc_nonlinear_costs(x):
-    return np.array([sum(range(1, xi+1)) for xi in x])
+    return np.array([xi*(xi+1)/2 for xi in x])
 
 
 def calc_fuel(cost_func):
