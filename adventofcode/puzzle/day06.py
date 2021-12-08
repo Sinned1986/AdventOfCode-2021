@@ -11,12 +11,11 @@ def calc_polulation(cycles):
                 assert(int_val < 6)
                 lanternfishes[int_val] += 1
 
-    print(lanternfishes)
     for day in range(0, cycles):
         fishes_ready_to_breed = lanternfishes.pop(0)
         lanternfishes.append(fishes_ready_to_breed)
         lanternfishes[6] += fishes_ready_to_breed
-        print(lanternfishes)
+
     return sum(lanternfishes)
 
 
