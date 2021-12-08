@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 from functools import partial
+import matplotlib.pyplot as plt
 
 
 def read_pos():
@@ -8,7 +9,9 @@ def read_pos():
     with open('day/7/input.txt') as fv:
         for row in fv:
             positions = list(map(int, row.split(',')))
-    return np.array(positions)
+    sorted_positions = np.sort(np.array(positions))
+    unique, counts = np.unique(sorted_positions, return_counts=True)
+    return np.array(unique), np.array(counts)
 
 
 def calc_linear_costs(x):
@@ -19,8 +22,13 @@ def calc_nonlinear_costs(x):
     return np.array([xi*(xi+1)//2 for xi in x])
 
 
-def calc_costs(cost_func, all_pos, target_pos):
-    return np.sum(cost_func(np.abs(all_pos - target_pos)))
+def calc_costs(cost_func, all_pos, weigth, target_pos):
+    diff = all_pos - target_pos
+    diff_abs = np.abs(diff)
+    costs = cost_func(diff_abs)
+    costs_weighted = weigth * costs
+    sum = np.sum(costs_weighted)
+    return sum
 
 
 def dx(f, target_pos):
@@ -28,45 +36,46 @@ def dx(f, target_pos):
 
 
 def calc_fuel(cost_func):
-    positions = read_pos()
-    min_pos = min(positions)
-    max_pos = max(positions)
-    f = partial(calc_costs, cost_func, positions)
+    pos, pos_weight = read_pos()
+
+    min_index = 0
+    max_index = len(pos)
+    f = partial(calc_costs, cost_func, pos, pos_weight)
     f_dx = partial(dx, f)
 
     least_fuel_required = sys.maxsize
     least_fuel_required_index = -1
 
-    left = min_pos
-    right = max_pos-1
-    mid = (left + right) // 2
+    left_index = min_index
+    right_index = max_index-1
+    mid_index = (left_index + right_index) // 2
     i = 0
-    fl = f_dx(left)
-    fr = f_dx(right)
-    fm = f_dx(mid)
+    fl = f_dx(pos[left_index])
+    fr = f_dx(pos[right_index])
+    fm = f_dx(pos[mid_index])
     while True:
-        # print('p: %d %d %d' % (left, mid, right))
-        # print('dx: %d %d %d' % (fl, fm, fr))
+        print('p: %4d %4d %4d dx: %7d %7d %7d' % (pos[left_index], pos[mid_index], pos[right_index], fl, fm, fr))
         assert(fl*fr <= 0)
 
         if fl*fm < 0:
-            right = mid
+            right_index = mid_index
             fr = fm
         else:
-            left = mid
+            left_index = mid_index
             fl = fm
         i += 1
 
-        mid_new = (left + right) // 2
-        fm = f_dx(mid)
-        if mid_new != mid:
-            mid = mid_new
+        mid_new_index = (left_index + right_index) // 2
+        fm = f_dx(pos[mid_new_index])
+        if mid_new_index != mid_index:
+            mid_index = mid_new_index
         else:
-            print('i %d f %d' % (i, mid))
             if fm > 0:
-                return f(mid)
+                print('i %d f %d' % (i, pos[mid_index]))
+                return f(pos[mid_index])
             else:
-                return f(mid+1)
+                print('i %d f %d' % (i, pos[mid_index+1]))
+                return f(pos[mid_index+1])
 
 
 def day07a():
