@@ -54,7 +54,7 @@ def calc_fuel(cost_func):
     fr = f_dx(pos[right_index])
     fm = f_dx(pos[mid_index])
     while True:
-        print('p: %4d %4d %4d dx: %7d %7d %7d' % (pos[left_index], pos[mid_index], pos[right_index], fl, fm, fr))
+        #print('p: %4d %4d %4d dx: %7d %7d %7d' % (pos[left_index], pos[mid_index], pos[right_index], fl, fm, fr))
         assert(fl*fr <= 0)
 
         if fl*fm < 0:
@@ -71,10 +71,10 @@ def calc_fuel(cost_func):
             mid_index = mid_new_index
         else:
             if fm > 0:
-                print('i %d f %d' % (i, pos[mid_index]))
+                #print('i %d f %d' % (i, pos[mid_index]))
                 return f(pos[mid_index])
             else:
-                print('i %d f %d' % (i, pos[mid_index+1]))
+                #print('i %d f %d' % (i, pos[mid_index+1]))
                 return f(pos[mid_index+1])
 
 
