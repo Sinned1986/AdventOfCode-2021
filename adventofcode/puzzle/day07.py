@@ -1,7 +1,6 @@
 import numpy as np
 import sys
 from functools import partial
-import matplotlib.pyplot as plt
 
 
 def read_pos():
