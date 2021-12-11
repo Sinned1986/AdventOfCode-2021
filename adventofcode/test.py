@@ -63,6 +63,9 @@ class RegressionTest(unittest.TestCase):
     def test_day9_a(self):
         self.assertEqual(adventofcode.puzzle.day09.day09a()[0], 528)
 
+    def test_day9_b(self):
+        self.assertEqual(adventofcode.puzzle.day09.day09b()[0], 920448)
+
 
 
 
