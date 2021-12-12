@@ -61,14 +61,17 @@ class RegressionTest(unittest.TestCase):
     def test_day8_b(self):
         self.assertEqual(adventofcode.puzzle.day08.day08b(), 1011823)
 
-    def test_day9_b(self):
-        self.assertEqual(adventofcode.puzzle.day09.day09b()[0], 920448)
+    def test_day9_a(self):
+        self.assertEqual(adventofcode.puzzle.day09.day09a()[0], 528)
 
     def test_day9_b(self):
         self.assertEqual(adventofcode.puzzle.day09.day09b()[0], 920448)
 
     def test_day10_a(self):
         self.assertEqual(adventofcode.puzzle.day10.day10a(), 394647)
+
+    def test_day10_b(self):
+        self.assertEqual(adventofcode.puzzle.day10.day10b(), 2380061249)
 
 
 if __name__ == '__main__':
