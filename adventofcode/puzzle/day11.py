@@ -46,5 +46,29 @@ def day11a():
     return flash_counter
 
 
+def day11b():
+    border_size = 1
+    start_map = add_border_to_map(read_energy_map(), border_size)
+    flashed_in_this_cycle = np.zeros(start_map.shape, dtype=bool)
+    cycles_until_flash_is_synced = 0
+    while not np.all(flashed_in_this_cycle[border_size:start_map.shape[0]-2*border_size+1, border_size:start_map.shape[1]-2*border_size+1]):
+        flashed_in_this_cycle = np.zeros(start_map.shape, dtype=bool)
+        start_map += 1
+        cycle_not_done = True
+        while cycle_not_done:
+            cycle_not_done = False
+            for yi in range(border_size, len(start_map)-border_size):
+                for xi in range(border_size, len(start_map[0])-border_size):
+                    if start_map[yi][xi] > 9 and not flashed_in_this_cycle[yi][xi]:
+                        flashed_in_this_cycle[yi][xi] = True
+                        start_map[yi-1:yi+2, xi-1:xi+2] += 1
+                        cycle_not_done = True
+        start_map *= np.invert(flashed_in_this_cycle)
+        cycles_until_flash_is_synced += 1
+
+    return cycles_until_flash_is_synced
+
+
 if __name__ == '__main__':
     print(day11a())
+    print(day11b())
