@@ -11,6 +11,7 @@ import adventofcode.puzzle.day08
 import adventofcode.puzzle.day09
 import adventofcode.puzzle.day10
 import adventofcode.puzzle.day11
+import adventofcode.puzzle.day12
 
 
 class RegressionTest(unittest.TestCase):
@@ -80,6 +81,13 @@ class RegressionTest(unittest.TestCase):
 
     def test_day11_b(self):
         self.assertEqual(adventofcode.puzzle.day11.day11b(), 273)
+
+    def test_day12_a(self):
+        self.assertEqual(adventofcode.puzzle.day12.day12a(), 4720)
+
+    def test_day12_b(self):
+        self.assertEqual(adventofcode.puzzle.day12.day12b(), 147848)
+
 
 if __name__ == '__main__':
     unittest.main()
