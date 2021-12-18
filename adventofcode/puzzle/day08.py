@@ -1,3 +1,5 @@
+# Day 8: Seven Segment Search
+
 import numpy as np
 
 def read_segments(mapping):

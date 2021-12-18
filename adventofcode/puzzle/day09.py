@@ -1,3 +1,5 @@
+# Day 9: Smoke Basin
+
 import numpy as np
 import colorama
 

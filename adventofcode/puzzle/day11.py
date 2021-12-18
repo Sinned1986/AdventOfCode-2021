@@ -1,4 +1,4 @@
-import copy
+# Day 11: Dumbo Octopus
 
 import numpy as np
 

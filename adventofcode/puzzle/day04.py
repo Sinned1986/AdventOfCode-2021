@@ -1,3 +1,5 @@
+# Day 4: Giant Squid
+
 import numpy as np
 import colorama
 from functools import partial

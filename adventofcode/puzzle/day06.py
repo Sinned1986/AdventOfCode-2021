@@ -1,3 +1,5 @@
+# Day 6: Lanternfish
+
 def calc_polulation(cycles):
     lanternfishes = []
     for i in range(0, 9):

@@ -1,3 +1,5 @@
+# Day 10: Syntax Scoring
+
 def read_codelines():
     code_lines = []
     with open('day/10/input.txt') as fv:

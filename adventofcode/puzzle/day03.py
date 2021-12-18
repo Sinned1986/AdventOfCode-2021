@@ -1,3 +1,5 @@
+# Day 3: Binary Diagnostic
+
 def read_diagnostics():
     diagnostics = []
     with open('day/3/input.txt') as fv:
