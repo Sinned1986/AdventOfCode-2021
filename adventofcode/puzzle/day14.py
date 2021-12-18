@@ -34,7 +34,7 @@ def process(template, rules, iterations):
         if key in rules:
             new_polymer.append(rules[key])
         new_polymer.append(template[i+1])
-    
+
     return process(new_polymer, rules, iterations-1)
 
 
@@ -48,9 +48,8 @@ def count_elements(polymer):
     return element_bin
 
 
-def day14a(input_file):
+def do_the_work(input_file, iterations):
     template, rules = read_file(input_file)
-    iterations = 10
     processed_polymer = process(list(template), rules, iterations)
     element_bin = count_elements(processed_polymer)
     max_element = max(zip(element_bin.values(), element_bin.keys()))
@@ -59,6 +58,15 @@ def day14a(input_file):
     return max_element[0] - min_element[0]
 
 
+def day14a(input_file):
+    return do_the_work(input_file, 10)
+
+
+def day14b(input_file):
+    return do_the_work(input_file, 40)
+
+
 if __name__ == '__main__':
     print(day14a('day/14/example.txt'))
     print(day14a('day/14/input.txt'))
+    print(day14b('day/14/input.txt'))
