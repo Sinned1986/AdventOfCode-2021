@@ -1,5 +1,11 @@
 # Day 14: Extended Polymerization
 
+from collections import Counter
+import os
+from multiprocessing import Pool as ThreadPool
+from functools import partial
+
+
 def read_file(input_files):
     polymer_template = ''
     pair_insertion_rules = {}
@@ -21,10 +27,10 @@ def read_file(input_files):
     return polymer_template, pair_insertion_rules
 
 
-def process(template, rules, iterations):
+def process(rules, iterations, template):
     if iterations <= 0:
         if iterations == 0:
-            return template
+            return Counter(template[:-1])
         else:
             raise Exception('invalid amount of process iterations')
     new_polymer = [template[0]]
@@ -35,7 +41,14 @@ def process(template, rules, iterations):
             new_polymer.append(rules[key])
         new_polymer.append(template[i+1])
 
-    return process(new_polymer, rules, iterations-1)
+    if new_polymer == template:
+        return Counter(template[:-1])
+
+    element_bin = Counter()
+    for i in range(0, len(new_polymer)-1):
+        sub_bin = process(template=new_polymer[i:i+2], rules=rules, iterations=iterations-1)
+        element_bin.update(sub_bin)
+    return element_bin
 
 
 def count_elements(polymer):
@@ -50,8 +63,26 @@ def count_elements(polymer):
 
 def do_the_work(input_file, iterations):
     template, rules = read_file(input_file)
-    processed_polymer = process(list(template), rules, iterations)
-    element_bin = count_elements(processed_polymer)
+
+    mt_pool = ThreadPool(os.cpu_count())
+    mt_templates = []
+    for i in range(0, len(template)-1):
+        mt_templates.append(template[i:i+2])
+
+    mt_func = partial(process, rules, iterations)
+    mt_results = mt_pool.map(mt_func, mt_templates)
+    element_bin = Counter()
+
+    for sub_bin in mt_results:
+        element_bin.update(sub_bin)
+    if template[-1] in element_bin:
+        element_bin[template[-1]] += 1
+    else:
+        element_bin[template[-1]] = 1
+
+    mt_pool.close()
+    mt_pool.join()
+
     max_element = max(zip(element_bin.values(), element_bin.keys()))
     min_element = min(zip(element_bin.values(), element_bin.keys()))
 

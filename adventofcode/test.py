@@ -97,6 +97,7 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(adventofcode.puzzle.day13.day13b('day/13/input.txt'), 'JGAJEFKU')
 
     def test_day14_a(self):
+        self.assertEqual(adventofcode.puzzle.day14.day14a('day/14/example.txt'), 1588)
         self.assertEqual(adventofcode.puzzle.day14.day14a('day/14/input.txt'), 3230)
 
 
