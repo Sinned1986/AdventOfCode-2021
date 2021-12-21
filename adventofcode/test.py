@@ -14,6 +14,9 @@ import adventofcode.puzzle.day11
 import adventofcode.puzzle.day12
 import adventofcode.puzzle.day13
 import adventofcode.puzzle.day14
+import adventofcode.puzzle.day15
+
+import numpy as np
 
 
 class RegressionTest(unittest.TestCase):
@@ -102,6 +105,28 @@ class RegressionTest(unittest.TestCase):
 
     def test_day14_b(self):
         self.assertEqual(adventofcode.puzzle.day14.day14b('day/14/input.txt'), 3542388214529)
+
+    def test_day15_a(self):
+        self.assertEqual(adventofcode.puzzle.day15.day15a('day/15/example.txt'), 40)
+        self.assertEqual(adventofcode.puzzle.day15.day15a('day/15/input.txt'), 472)
+
+    def test_day15_b(self):
+        self.assertEqual(adventofcode.puzzle.day15.day15b('day/15/example.txt'), 315)
+        self.assertEqual(adventofcode.puzzle.day15.day15b('day/15/input.txt'), 2851)
+
+    def test_day15_generate_map_for_part_2(self):
+
+        generated_array = adventofcode.puzzle.day15.generate_map_for_part_2(np.array([8], dtype=np.uint8), 5, 5)
+        reference_array = np.array(
+            [
+                [8, 9, 1, 2, 3],
+                [9, 1, 2, 3, 4],
+                [1, 2, 3, 4, 5],
+                [2, 3, 4, 5, 6],
+                [3, 4, 5, 6, 7]
+            ], dtype=np.uint8
+        )
+        self.assertTrue(np.array_equal(generated_array, reference_array))
 
 
 if __name__ == '__main__':
