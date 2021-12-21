@@ -15,6 +15,7 @@ import adventofcode.puzzle.day12
 import adventofcode.puzzle.day13
 import adventofcode.puzzle.day14
 import adventofcode.puzzle.day15
+import adventofcode.puzzle.day16 as day16
 
 import numpy as np
 
@@ -127,6 +128,44 @@ class RegressionTest(unittest.TestCase):
             ], dtype=np.uint8
         )
         self.assertTrue(np.array_equal(generated_array, reference_array))
+
+    def test_day16_read_file(self):
+        queue_0_content = [1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0]
+        queue_1_content = [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        queue = day16.read_file('day/16/example.txt')
+
+        self.assertGreaterEqual(len(queue), 3)
+        self.assertCountEqual(queue[0], queue_0_content)
+        self.assertListEqual(queue[0], queue_0_content)
+        self.assertCountEqual(queue[1], queue_1_content)
+        self.assertListEqual(queue[1], queue_1_content)
+
+    def test_day16_ValuePaket(self):
+        queue = day16.read_file('day/16/example.txt')
+        objects = day16.parse_queue(queue[0])
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0].version, 6)
+        self.assertEqual(objects[0].value, 2021)
+
+    def test_day16_OperatorPaket(self):
+        queue = day16.read_file('day/16/example.txt')
+        objects = day16.parse_queue(queue[1])
+
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0].version, 1)
+        self.assertEqual(objects[0].type_id, 6)
+        self.assertEqual(len(objects[0].packets), 2)
+        self.assertEqual(objects[0].packets[0].value, 10)
+        self.assertEqual(objects[0].packets[1].value, 20)
+
+        objects = day16.parse_queue(queue[2])
+        self.assertEqual(objects[0].version, 7)
+        self.assertEqual(objects[0].type_id, 3)
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(len(objects[0].packets), 3)
+        self.assertEqual(objects[0].packets[0].value, 1)
+        self.assertEqual(objects[0].packets[1].value, 2)
+        self.assertEqual(objects[0].packets[2].value, 3)
 
 
 if __name__ == '__main__':
