@@ -167,6 +167,18 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(objects[0].packets[1].value, 2)
         self.assertEqual(objects[0].packets[2].value, 3)
 
+    def test_day16_VersionSum(self):
+        queue = day16.read_file('day/16/example.txt')
+        lines_and_version_sums = {3: 16, 4: 12, 5: 23, 6: 31}
+
+        for k, v in lines_and_version_sums.items():
+            objects = day16.parse_queue(queue[k])
+            version_sum = day16.calc_version_sum(objects)
+            self.assertEqual(v, version_sum)
+
+    def test_day16_a(self):
+        self.assertEqual(day16.day16a('day/16/input.txt'), 934)
+
 
 if __name__ == '__main__':
     unittest.main()
