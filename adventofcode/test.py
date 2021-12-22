@@ -179,6 +179,16 @@ class RegressionTest(unittest.TestCase):
     def test_day16_a(self):
         self.assertEqual(day16.day16a('day/16/input.txt'), 934)
 
+    def test_day16_arithmetics(self):
+        excepted_results = {7: 3, 8: 54, 9: 7, 10: 9, 11: 1, 12: 0, 13: 0, 14: 1}
+        queue = day16.read_file('day/16/example.txt')
+        for k, v in excepted_results.items():
+            objects = day16.parse_queue(queue[k])
+            result = objects[0].result()
+            self.assertEqual(v, result)
+
+    def test_day16_a(self):
+        self.assertEqual(day16.day16b('day/16/input.txt'), 912901337844)
 
 if __name__ == '__main__':
     unittest.main()

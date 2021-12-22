@@ -6,6 +6,9 @@ class Packet:
         self.version = version
         self.type_id = type_id
 
+    def result(self):
+        pass
+
 
 class ValuePacket(Packet):
 
@@ -26,6 +29,8 @@ class ValuePacket(Packet):
         self.value = value
         self.value_length = value_length
 
+    def result(self):
+        return self.value
 
 class OperatorPacket(Packet):
     def __init__(self, version, type_id, queue):
@@ -44,6 +49,46 @@ class OperatorPacket(Packet):
             objects = parse_queue(queue, field_len)
 
         self.packets = objects
+
+    def result(self):
+
+        if self.type_id == 0:
+            value = 0
+            for object in self.packets:
+                value += object.result()
+            return value
+        elif self.type_id == 1:
+            value = self.packets[0].result()
+            for object in self.packets[1:]:
+                value *= object.result()
+            return value
+        elif self.type_id == 2:
+            value = self.packets[0].result()
+            for object in self.packets[1:]:
+                value = min(value, object.result())
+            return value
+        elif self.type_id == 3:
+            value = self.packets[0].result()
+            for object in self.packets[1:]:
+                value = max(value, object.result())
+            return value
+        elif self.type_id == 5:
+            if self.packets[0].result() > self.packets[1].result():
+                return 1
+            else:
+                return 0
+        elif self.type_id == 6:
+            if self.packets[0].result() < self.packets[1].result():
+                return 1
+            else:
+                return 0
+        elif self.type_id == 7:
+            if self.packets[0].result() == self.packets[1].result():
+                return 1
+            else:
+                return 0
+        else:
+            return None
 
 
 def read_bits(my_queue, length):
@@ -112,12 +157,17 @@ def calc_version_sum(objects):
 
 def day16a(file_name):
     queue = read_file(file_name)
-    objects =parse_queue(queue[0])
+    objects = parse_queue(queue[0])
     return calc_version_sum(objects)
 
 
+def day16b(file_name):
+    queue = read_file(file_name)
+    objects = parse_queue(queue[0])
+    return objects[0].result()
 
 
 if __name__ == '__main__':
     print(day16a('day/16/input.txt'))
+    print(day16b('day/16/input.txt'))
 
